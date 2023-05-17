@@ -3,6 +3,7 @@ package com.mycompany.mec.a.lab06;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.ImageIcon;
 /**
  *
@@ -10,10 +11,13 @@ import javax.swing.ImageIcon;
  */
 public class Dados extends javax.swing.JFrame {
 
-    String[] imagen  = {"1.jpg", "2.png", "3.png", "4.png", "5.png", "6.jpg"}; 
+    String[] dado  = {"1.png", "2.png", "3.png", "4.png", "5.png", "6.png"}; 
     Random rand = new Random();
+    AtomicInteger x = new AtomicInteger();
     public Dados() {
         initComponents();
+        Dado1.setIcon(new ImageIcon("image/6.png")); 
+        Dado2.setIcon(new ImageIcon("image/6.png")); 
     }
 
     /**
@@ -26,14 +30,20 @@ public class Dados extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        Tiempo = new javax.swing.JLabel();
         Lanzar = new javax.swing.JButton();
-        ImageLabel = new javax.swing.JLabel();
+        Dado1 = new javax.swing.JLabel();
+        Dado2 = new javax.swing.JLabel();
+        Sum_Dad = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(30, 29, 29));
 
-        Tiempo.setText("1");
+        jPanel1.setBackground(new java.awt.Color(30, 29, 29));
 
+        Lanzar.setBackground(new java.awt.Color(0, 0, 0));
+        Lanzar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        Lanzar.setForeground(new java.awt.Color(255, 255, 255));
         Lanzar.setText("Lanzar");
         Lanzar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -41,7 +51,18 @@ public class Dados extends javax.swing.JFrame {
             }
         });
 
-        ImageLabel.setText("jLabel1");
+        Dado1.setText(".");
+
+        Dado2.setText(".");
+
+        Sum_Dad.setFont(new java.awt.Font("Segoe UI Emoji", 1, 18)); // NOI18N
+        Sum_Dad.setForeground(new java.awt.Color(255, 255, 255));
+        Sum_Dad.setText("Dados: 12");
+
+        jLabel1.setBackground(new java.awt.Color(255, 51, 51));
+        jLabel1.setFont(new java.awt.Font("Serif", 3, 20)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel1.setText("Juego de Dados");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -50,25 +71,36 @@ public class Dados extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(Tiempo)
-                        .addGap(103, 103, 103)
-                        .addComponent(Lanzar))
+                        .addGap(94, 94, 94)
+                        .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(168, 168, 168)
-                        .addComponent(ImageLabel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(Dado1)
+                                .addGap(62, 62, 62)
+                                .addComponent(Dado2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(Lanzar)
+                                .addGap(56, 56, 56)
+                                .addComponent(Sum_Dad)))))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ImageLabel)
-                .addGap(74, 74, 74)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Dado2)
+                    .addComponent(Dado1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Lanzar)
-                    .addComponent(Tiempo))
-                .addGap(45, 45, 45))
+                    .addComponent(Sum_Dad)
+                    .addComponent(Lanzar))
+                .addGap(120, 120, 120))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -79,31 +111,31 @@ public class Dados extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void LanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LanzarActionPerformed
-        Tiempo.setText ("1");
+        x.set(1);
         TimerTask tmt = new TimerTask() {
 		    @Override
 		    public void run(){
-		       Tiempo.setText("" + (Integer.parseInt(Tiempo.getText())*2));
-		       System.out.println(imagen[rand.nextInt(6)]);
-                       ImageLabel.setIcon(new ImageIcon("image/" + imagen[rand.nextInt(6)] )); 
-		       //System.out.println(imagen[rand.nextInt(6)]);
-		       if (Integer.parseInt(Tiempo.getText()) > 16000)
+                       int d1 = rand.nextInt(6), d2 = rand.nextInt(6); 
+                       x.set(x.get()*2);		       
+                       Dado1.setIcon(new ImageIcon("image/" + dado[d1] )); 	
+                       Dado2.setIcon(new ImageIcon("image/" + dado[d2] )); 
+                       Sum_Dad.setText("Dados: " + (d1+d2+2));
+		       if (x.get() > 120000)
 		        cancel();
                        try{
-                           Thread.sleep(Integer.parseInt(Tiempo.getText())/10);
+                           Thread.sleep(x.get()/90);
                        } catch(InterruptedException e){ }
 		    }
 		};
-		//int tiempo = x.get();
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(tmt, 1000,100);
+		timer.scheduleAtFixedRate(tmt, 1000,90);
     }//GEN-LAST:event_LanzarActionPerformed
 
     /**
@@ -142,9 +174,11 @@ public class Dados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ImageLabel;
+    private javax.swing.JLabel Dado1;
+    private javax.swing.JLabel Dado2;
     private javax.swing.JButton Lanzar;
-    private javax.swing.JLabel Tiempo;
+    private javax.swing.JLabel Sum_Dad;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
