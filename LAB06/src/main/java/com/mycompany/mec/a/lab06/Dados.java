@@ -16,8 +16,10 @@ public class Dados extends javax.swing.JFrame {
     AtomicInteger x = new AtomicInteger();
     public Dados() {
         initComponents();
+        setTitle("Dados");
         Dado1.setIcon(new ImageIcon("image/6.png")); 
         Dado2.setIcon(new ImageIcon("image/6.png")); 
+        
     }
 
     /**
@@ -36,7 +38,7 @@ public class Dados extends javax.swing.JFrame {
         Sum_Dad = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(30, 29, 29));
 
         jPanel1.setBackground(new java.awt.Color(30, 29, 29));

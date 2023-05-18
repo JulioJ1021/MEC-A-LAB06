@@ -24,12 +24,52 @@ public class TragaMonedas extends javax.swing.JFrame {
     /**
      * Creates new form TragaMonedas
      */
+    int apuesta;
+    int saldo;
     AtomicInteger atm = new AtomicInteger();
     Random rand = new Random();
-    public TragaMonedas() {
+    public void girar_ruleta(){
+        atm.set(1);
+            TimerTask tmt = new TimerTask() {
+                        @Override
+                        public void run(){
+                           int r1[] = {rand.nextInt(4), rand.nextInt(4)},
+                               r2[] = {rand.nextInt(4), rand.nextInt(4)},
+                               r3[] = {rand.nextInt(4), rand.nextInt(4)};
+                           //int r1[]={2,2},r2[]={2,2},r3[]={2,2};
+                           //La línea anterior es para comprobar que emite el mensaje de felicitaciones
+                           atm.set(atm.get()*2);		       
+                           BufferedImage imagenOriginal = cargarImagen("image/TragamonedasIMG.jpg");
+                           BufferedImage parte1 = imagenOriginal.getSubimage(102*r1[0], 87*r1[1], 102, 87);
+                           BufferedImage parte2 = imagenOriginal.getSubimage(102*r2[0], 87*r2[1], 102, 87);
+                           BufferedImage parte3 = imagenOriginal.getSubimage(102*r3[0], 87*r3[1], 102, 87);
+                           Img1.setIcon(new ImageIcon(parte1));
+                           Img2.setIcon(new ImageIcon(parte2));
+                           Img3.setIcon(new ImageIcon(parte3));
+                           if (atm.get() > 120000){
+                               if(r1[0] == r2[0] && r2[0] == r3[0]){
+                                    if(r1[1] == r2[1] && r2[1] == r3[1])
+                                        JOptionPane.showMessageDialog(null, "Felicitaciones ¡¡HA GANADO!!");
+                                    apuesta *= 10;
+                                    saldo *= apuesta;
+                               }
+                            cancel();
+                           }
+                           try{
+                               Thread.sleep(atm.get()/90);
+                           } catch(InterruptedException e){ }
+                        }
+                    };
+                    Timer timer = new Timer();
+                    timer.scheduleAtFixedRate(tmt, 1000,90);
+    }
+    public TragaMonedas() { 
+        saldo = 10000;
         initComponents();
+        setTitle("Traga Monedas");
         jLabel1.setIcon(new ImageIcon("image/Tragamonedas_Fondo.jpg"));
         
+        Girar.setVisible(saldo != 0);        
     }
     private static BufferedImage cargarImagen(String ruta) {
         try {
@@ -55,8 +95,9 @@ public class TragaMonedas extends javax.swing.JFrame {
         Img3 = new javax.swing.JLabel();
         Girar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setPreferredSize(new java.awt.Dimension(612, 419));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -73,6 +114,9 @@ public class TragaMonedas extends javax.swing.JFrame {
         jPanel1.add(Girar, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 110, 40, 20));
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 460));
 
+        jLabel2.setText("jLabel2");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 60, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,37 +132,20 @@ public class TragaMonedas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void GirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GirarActionPerformed
-        atm.set(1);
-        TimerTask tmt = new TimerTask() {
-		    @Override
-		    public void run(){
-                       int x1 = rand.nextInt(4), y1 = rand.nextInt(4),
-                           x2 = rand.nextInt(4), y2 = rand.nextInt(4),
-                           x3 = rand.nextInt(4), y3 = rand.nextInt(4);
-                       //int x1=2,x2=2,x3=2,y1=1,y2=1,y3=1;
-                       //La línea anterior es para comprobar que emite el mensaje de felicitaciones
-                       atm.set(atm.get()*2);		       
-                       BufferedImage imagenOriginal = cargarImagen("image/TragamonedasIMG.jpg");
-                       BufferedImage parte1 = imagenOriginal.getSubimage(102*x1, 87*y1, 102, 87);
-                       BufferedImage parte2 = imagenOriginal.getSubimage(102*x2, 87*y2, 102, 87);
-                       BufferedImage parte3 = imagenOriginal.getSubimage(102*x3, 87*y3, 102, 87);
-                       Img1.setIcon(new ImageIcon(parte1));
-                       Img2.setIcon(new ImageIcon(parte2));
-                       Img3.setIcon(new ImageIcon(parte3));
-		       if (atm.get() > 120000){
-                           if(x1 == x2 && x2 == x3){
-                                if(y1 == y2 && y2 == y3)
-                                    JOptionPane.showMessageDialog(null, "Felicitaciones ¡¡HA GANADO!!");
-                           }
-		        cancel();
-                       }
-                       try{
-                           Thread.sleep(atm.get()/90);
-                       } catch(InterruptedException e){ }
-		    }
-		};
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(tmt, 1000,90);
+        if(saldo != 0){    
+            try{    
+                apuesta = Integer.parseInt(JOptionPane.showInputDialog(null, "Su saldo es $" + saldo + "\nIngrese su apuesta:"));
+                if(apuesta <= saldo){
+                saldo -= apuesta;
+                girar_ruleta();
+                }else JOptionPane.showMessageDialog(null, "Saldo Insuficiente");                                          
+                        }catch(Exception e) {
+                            e.printStackTrace();
+                        }                   
+        }else{
+                JOptionPane.showMessageDialog(null, "Se ha quedado sin saldo");
+                Girar.setVisible(false);
+        }
     
                 
     }//GEN-LAST:event_GirarActionPerformed
@@ -165,6 +192,7 @@ public class TragaMonedas extends javax.swing.JFrame {
     private javax.swing.JLabel Img2;
     private javax.swing.JLabel Img3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
