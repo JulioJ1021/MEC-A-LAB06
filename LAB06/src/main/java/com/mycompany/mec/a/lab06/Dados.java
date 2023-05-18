@@ -14,6 +14,28 @@ public class Dados extends javax.swing.JFrame {
     String[] dado  = {"1.png", "2.png", "3.png", "4.png", "5.png", "6.png"}; 
     Random rand = new Random();
     AtomicInteger x = new AtomicInteger();
+    public class Hilo extends Thread{
+        public void run(){
+            x.set(1);
+            TimerTask tmt = new TimerTask() {
+		    @Override
+		    public void run(){
+                       int d1 = rand.nextInt(6), d2 = rand.nextInt(6); 
+                       x.set(x.get()*2);		       
+                       Dado1.setIcon(new ImageIcon("image/" + dado[d1] )); 	
+                       Dado2.setIcon(new ImageIcon("image/" + dado[d2] )); 
+                       Sum_Dad.setText("Dados: " + (d1+d2+2));
+		       if (x.get() > 120000)
+		        cancel();
+                       try{
+                           Thread.sleep(x.get()/90);
+                       } catch(InterruptedException e){ }
+		    }
+		};
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(tmt, 1000,90);
+        }
+    }
     public Dados() {
         initComponents();
         setTitle("Dados");
@@ -120,7 +142,7 @@ public class Dados extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LanzarActionPerformed
-        x.set(1);
+        /*x.set(1);
         TimerTask tmt = new TimerTask() {
 		    @Override
 		    public void run(){
@@ -137,7 +159,9 @@ public class Dados extends javax.swing.JFrame {
 		    }
 		};
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(tmt, 1000,90);
+		timer.scheduleAtFixedRate(tmt, 1000,90);*/
+        Hilo lanzar = new Hilo();
+        lanzar.start();
     }//GEN-LAST:event_LanzarActionPerformed
 
     /**

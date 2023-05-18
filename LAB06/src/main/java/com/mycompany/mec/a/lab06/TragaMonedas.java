@@ -71,6 +71,24 @@ public class TragaMonedas extends javax.swing.JFrame {
         
         Girar.setVisible(saldo != 0);        
     }
+    public class Hilo extends Thread{
+        public void run(){
+            if(saldo != 0){    
+            try{    
+                apuesta = Integer.parseInt(JOptionPane.showInputDialog(null, "Su saldo es $" + saldo + "\nIngrese su apuesta:"));
+                if(apuesta <= saldo){
+                saldo -= apuesta;
+                girar_ruleta();
+                }else JOptionPane.showMessageDialog(null, "Saldo Insuficiente");                                          
+                        }catch(Exception e) {
+                            e.printStackTrace();
+                        }                   
+        }else{
+                JOptionPane.showMessageDialog(null, "Se ha quedado sin saldo");
+                Girar.setVisible(false);
+        }
+        }
+    }
     private static BufferedImage cargarImagen(String ruta) {
         try {
             return ImageIO.read(new File(ruta));
@@ -132,22 +150,8 @@ public class TragaMonedas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void GirarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GirarActionPerformed
-        if(saldo != 0){    
-            try{    
-                apuesta = Integer.parseInt(JOptionPane.showInputDialog(null, "Su saldo es $" + saldo + "\nIngrese su apuesta:"));
-                if(apuesta <= saldo){
-                saldo -= apuesta;
-                girar_ruleta();
-                }else JOptionPane.showMessageDialog(null, "Saldo Insuficiente");                                          
-                        }catch(Exception e) {
-                            e.printStackTrace();
-                        }                   
-        }else{
-                JOptionPane.showMessageDialog(null, "Se ha quedado sin saldo");
-                Girar.setVisible(false);
-        }
-    
-                
+        Hilo girar = new Hilo();
+        girar.start();               
     }//GEN-LAST:event_GirarActionPerformed
 
     /**
