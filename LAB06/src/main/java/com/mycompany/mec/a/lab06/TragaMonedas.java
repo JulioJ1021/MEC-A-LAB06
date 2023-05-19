@@ -36,7 +36,7 @@ public class TragaMonedas extends javax.swing.JFrame {
                            int r1[] = {rand.nextInt(4), rand.nextInt(4)},
                                r2[] = {rand.nextInt(4), rand.nextInt(4)},
                                r3[] = {rand.nextInt(4), rand.nextInt(4)};
-                           //int r1[]={2,2},r2[]={2,2},r3[]={2,2};
+                           //int r1[]={2,1},r2[]={2,2},r3[]={2,2};
                            //La línea anterior es para comprobar que emite el mensaje de felicitaciones
                            atm.set(atm.get()*2);		       
                            BufferedImage imagenOriginal = cargarImagen("image/TragamonedasIMG.jpg");
@@ -46,12 +46,19 @@ public class TragaMonedas extends javax.swing.JFrame {
                            Img1.setIcon(new ImageIcon(parte1));
                            Img2.setIcon(new ImageIcon(parte2));
                            Img3.setIcon(new ImageIcon(parte3));
+                           int acierto = 0;
                            if (atm.get() > 120000){
-                               if(r1[0] == r2[0] && r2[0] == r3[0]){
-                                    if(r1[1] == r2[1] && r2[1] == r3[1])
-                                        JOptionPane.showMessageDialog(null, "Felicitaciones ¡¡HA GANADO!!");
-                                    apuesta *= 10;
-                                    saldo *= apuesta;
+                                       if(r1[0] == r2[0] && r1[1] == r2[1])acierto++;
+                                       if(r1[0] == r3[0] && r1[1] == r3[1])acierto++;
+                                       if(r3[0] == r2[0] && r3[1] == r2[1])acierto++;
+                                       System.out.println("aciertos: " + acierto);
+                                       System.out.println("r1:" + r1[0]+r1[1]);
+
+                               if(acierto > 0){                            
+                                        JOptionPane.showMessageDialog(null, "Felicitaciones ¡¡HA GANADO $" +
+                                                (apuesta * acierto * 5) + "!!");
+                                    apuesta *= acierto * 5;
+                                    saldo += apuesta;
                                }
                             cancel();
                            }
